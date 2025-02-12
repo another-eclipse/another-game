@@ -7,6 +7,9 @@ window.addEventListener('load', function() {
     canvas.width = window.innerWidth;
     canvas.height = window.innerHeight;
 
+    const idleRight = document.getElementById("idleRight");
+    const idleLeft = document.getElementById("idleLeft");
+
     class InputHandler {
         constructor(){
             this.keys = [];
@@ -41,7 +44,7 @@ window.addEventListener('load', function() {
         constructor(gameWidth, gameHeight){
             this.gameWidth = gameWidth * 0.5;
             this.gameHeight = gameHeight * 0.9;
-            this.image = document.getElementById('dogImage');
+            this.image = idleRight;
             this.width = 200;
             this.height = 181.83;
             this.x = this.gameWidth/2 - this.width/2;
@@ -93,11 +96,11 @@ window.addEventListener('load', function() {
             else if (this.x > this.gameWidth - this.width) this.x = this.gameWidth - this.width;
 
             if (this.speed > 0) {
-                this.frameY = 0;
+                this.image = idleRight;
                 lastKey = 'right'
             }
             if (this.speed < 0){
-                this.frameY = 1;
+                this.image = idleLeft;
                 lastKey = 'left'
                 
             } 
@@ -171,11 +174,6 @@ window.addEventListener('load', function() {
                 sign1.update('back')
             }
             
-            // if(this.x > 670 && this.x < 730){
-            //     pressSpace.style.display = "block"
-            // } else {
-            //     pressSpace.style.display = "none";
-            // }
         }
         
         onGround(){
