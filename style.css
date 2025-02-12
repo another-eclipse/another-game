@@ -13,6 +13,30 @@ body {
   border: none;
 }
 
-#dogImage, #backgroundImage, #enemyImage {
+#dogImage, #backgroundImage, #enemyImage, #sign1 {
     display: none;
+}
+
+#dogImage {
+    z-index: 30;
+}
+
+#pressSpace {
+    background-color: white;
+    padding: 10px;
+    position: absolute;
+    margin-top: 600px;
+    z-index: 20;
+    transition: all 0.3s ease-in-out;
+}
+
+#statusText {
+ 
+    padding: 40px;
+  color: white;
+  font-weight: bold;
+  font-size: 50px;
+    position: absolute;
+    left: 50vw;
+    top: 40vh;
 }

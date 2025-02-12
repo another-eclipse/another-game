@@ -1,7 +1,9 @@
 window.addEventListener('load', function() {
 
     const canvas = document.getElementById('canvas1');
+    const pressSpace = document.getElementById("pressSpace");
     const ctx = canvas.getContext('2d');
+    let statusText = document.getElementById("statusText");
     canvas.width = window.innerWidth;
     canvas.height = window.innerHeight;
 
@@ -10,9 +12,11 @@ window.addEventListener('load', function() {
             this.keys = [];
             
             window.addEventListener('keydown', e => {
+                
                 if ((e.key === 'ArrowDown' || 
                     e.key === 'ArrowUp' || 
                     e.key === 'ArrowLeft' || 
+                    e.key === ' ' || 
                     e.key === 'ArrowRight') && 
                     this.keys.indexOf(e.key) === -1){
                     this.keys.push(e.key);
@@ -23,10 +27,11 @@ window.addEventListener('load', function() {
             window.addEventListener('keyup', e => {
                 if (e.key === 'ArrowDown' || 
                     e.key === 'ArrowUp' || 
+                    e.key === ' ' || 
                     e.key === 'ArrowLeft' || 
                     e.key === 'ArrowRight'){
                     this.keys.splice(this.keys.indexOf(e.key), 1);
-                    console.log(this.keys)
+                    
                 }
             })
         }
@@ -94,7 +99,7 @@ window.addEventListener('load', function() {
             if (this.speed < 0){
                 this.frameY = 1;
                 lastKey = 'left'
-                console.log(this.frameY)
+                
             } 
     
 
@@ -159,8 +164,18 @@ window.addEventListener('load', function() {
             }
 
             if (this.x >= this.gameWidth - this.x*0.3 && input.keys.indexOf('ArrowRight') > -1){
-                background.update()
+                background.update('forward')
+                sign1.update('forward')
+            } else if (this.x <= this.gameWidth * 0.1 && input.keys.indexOf('ArrowLeft') > -1){
+                background.update('back')
+                sign1.update('back')
             }
+            
+            // if(this.x > 670 && this.x < 730){
+            //     pressSpace.style.display = "block"
+            // } else {
+            //     pressSpace.style.display = "none";
+            // }
         }
         
         onGround(){
@@ -185,45 +200,84 @@ window.addEventListener('load', function() {
             context.drawImage(this.image, this.x, this.y, this.width, this.height)
             context.drawImage(this.image, this.x + this.width - this.speed, this.y, this.width, this.height)
         }
-        update(){
-            this.x -= this.speed;
-            if (this.x < 0 - this.width) this.x = 0;
+        
+        update(orientation){
+            if(orientation == "forward"){
+                this.x -= this.speed;
+                if (this.x < 0 - this.width) this.x = 0;
+            } else if (orientation == "back"){
+                this.x += this.speed;
+                if (this.x < 0 - this.width) this.x = 0;
+            }
+            
         }
     }
 
-    // class Enemy {
-    //     constructor(gameWidth, gameHeight){
-    //         this.gameWidth = gameWidth;
-    //         this.gameHeight = gameHeight;
-    //         this.width = 160;
-    //         this.height = 119;
-    //         this.image = document.getElementById()
-    //     }
-    // }
-
-    let lastTime = 0;
-
-    // function handleEnemies() {
-
-    // }
-
-    function displayStatusText() {
-
+    class InteractableItem {
+        constructor(gameWidth, gameHeight){
+            this.gameWidth = gameWidth;
+            this.gameHeight = gameHeight;
+            this.image = document.getElementById("sign1");
+            this.width = 200;
+            this.height = 200;
+            this.x = gameWidth/2;
+            this.y = gameHeight * 0.7;
+            this.speed = 2;
+        }
+        draw(context){
+            context.drawImage(this.image, this.x, this.y, this.width, this.height)
+           
+        }
+        update(orientation){
+            if(orientation == "forward"){
+                this.x -= this.speed;
+                
+            } else if (orientation == "back"){
+                this.x += this.speed;
+                
+            }
+            
+            if (this.x >= player.x - 100 && this.x <= player.x + 100){
+                pressSpace.style.display = "block";
+                pressSpace.style.marginLeft = this.x + 60 +"px";
+                if(input.keys.indexOf(' ') > -1){
+                         
+                        statusText.innerHTML = "This is a test message."
+                    
+                }
+            } else {
+                pressSpace.style.display = "none";
+                statusText.innerHTML = ""
+            };
+                
+            
+            
+        }
     }
 
+    
+
+   
+
+ 
 
     const input = new InputHandler();
     const player = new Player(canvas.width, canvas.height);
     const background = new Background(canvas.width, canvas.height) 
+    const sign1 = new InteractableItem(canvas.width, canvas.height);
+
+    let lastTime = 0;
 
     function animate(timeStamp){
         const deltaTime = timeStamp - lastTime;
         lastTime = timeStamp;
         ctx.clearRect(0,0,canvas.width,canvas.height);
         background.draw(ctx);
-        // background.update();
+        sign1.draw(ctx);
+        sign1.update();
         player.draw(ctx);
         player.update(input, deltaTime);
+        
         
         requestAnimationFrame(animate);
     }
