@@ -1,0 +1,18 @@
+body {
+    background-color: rgb(255, 255, 255);
+    position: absolute;
+    object-fit: cover;
+    overflow: hidden;
+    margin: 0%;
+}
+
+#canvas1 {
+    position: absolute;
+  object-fit: cover;
+  overflow: hidden;
+  border: none;
+}
+
+#dogImage, #backgroundImage, #enemyImage {
+    display: none;
+}
