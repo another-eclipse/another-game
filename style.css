@@ -13,7 +13,7 @@ body {
   border: none;
 }
 
-#dogImage, #backgroundImage, #enemyImage, #sign1 {
+#dogImage, #backgroundImage, #enemyImage, #sign1, img.bg {
     display: none;
 }
 
@@ -22,21 +22,40 @@ body {
 }
 
 #pressSpace {
-    background-color: white;
+    font-size: 40px;
+    font-family: fantasy;
+    -webkit-text-stroke-width: 2px;
+    -webkit-text-stroke-color: #213D59;
     padding: 10px;
+    width: 20vw;
     position: absolute;
-    margin-top: 600px;
+    color: #C9AE77;
+    font-weight: bold;
+    margin-top: -20vh;
     z-index: 20;
     transition: all 0.3s ease-in-out;
 }
 
 #statusText {
- 
+    text-align: center;
+    background-color: #213D59;
+    border: dashed #007E91 8px;
+    font-family:'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
     padding: 40px;
-  color: white;
-  font-weight: bold;
-  font-size: 50px;
+    color: white;
+    font-weight: 100;
+    letter-spacing: 1px;
+    font-size: 30px;
+    width: 40vw;
     position: absolute;
-    left: 50vw;
-    top: 40vh;
+    left: 30vw;
+    top: 20vh;
+    z-index: 60;
+}
+
+.char-img {
+    display: none;
+    width: 200px;
+    position: relative;
+    z-index: 70;
 }
