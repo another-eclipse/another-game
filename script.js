@@ -41,7 +41,7 @@ window.addEventListener('load', function() {
     let closeGame = document.getElementById("closeGame");
 
     winMessage.style.display = "none";
-
+    pressSpace.innerHTML = "CHECK ME OUT!";
     
     let lastOri;
     
@@ -76,7 +76,9 @@ window.addEventListener('load', function() {
         }
     }
     let lastKey = "";
-  
+    if (lastKey = "right"){
+        pressSpace.innerHTML = "CHECK ME OUT!";
+    }
     class Player {
         constructor(gameWidth, gameHeight){
             this.gameWidth = gameWidth * 0.6;
@@ -148,7 +150,9 @@ window.addEventListener('load', function() {
                 }
             }
 
-            
+            if (lastKey = "right"){
+                pressSpace.innerHTML = "CHECK ME OUT!";
+            }
 
             // horizontal movement
             this.x += this.speed;
@@ -269,6 +273,7 @@ window.addEventListener('load', function() {
                 marshy.update('forward')
              lastKey = 'right'
              lastOri = 'forward';
+             
             } else if (this.x <= this.gameWidth * 0.1 && input.keys.indexOf('ArrowLeft') > -1){
                 background.update('back')
                 background1.update('back')
@@ -284,6 +289,9 @@ window.addEventListener('load', function() {
                 marshy.update('back')
                 lastKey = 'left';
                 lastOri = 'back';
+                pressSpace.style.display = "block";
+                pressSpace.innerHTML = "Nemoj ići lijevo na križanju staze...";
+
             }
             
         }
