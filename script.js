@@ -25,8 +25,26 @@ window.addEventListener('load', function() {
 
     const signImg1 = document.getElementById("sign1");
     const signImg2 = document.getElementById("sign2");
+    const signImg3 = document.getElementById("sign3");
+    const signImg4 = document.getElementById("sign4");
+    const signImg5 = document.getElementById("sign5");
+    const marshyImg = document.getElementById("marshy");
 
+    let finalBodyText = document.getElementById("lastMessage");
+    
+    
+    let yesButtons = document.getElementById("yes");
+    let noButton = document.getElementById("no");
+    let warningParagraph = document.getElementById("warning");
+    let winMessage = document.getElementById("winMessage");
+    let toelessMessage = document.getElementById("toelessMessage");
+    let closeGame = document.getElementById("closeGame");
+
+    winMessage.style.display = "none";
+
+    
     let lastOri;
+    
 
     class InputHandler {
         constructor(){
@@ -58,6 +76,7 @@ window.addEventListener('load', function() {
         }
     }
     let lastKey = "";
+  
     class Player {
         constructor(gameWidth, gameHeight){
             this.gameWidth = gameWidth * 0.6;
@@ -82,6 +101,7 @@ window.addEventListener('load', function() {
             context.drawImage(this.image, this.width * this.frameX, this.height * this.frameY, this.width, this.height, this.x, this.y, this.width, this.height);
         }
         update(input, deltaTime){
+            
             if(input.keys.indexOf('ArrowRight') > -1){
                 if(input.keys.indexOf('ArrowUp') > -1 && this.onGround()){
                     this.image = jumpRight
@@ -222,21 +242,31 @@ window.addEventListener('load', function() {
                     
             } else if (sign2.x >= this.x - 50 && sign2.x <= this.x + 250){
                 sign2.drawText(bodyText2)
+            } else if (sign3.x >= this.x - 50 && sign3.x <= this.x + 250){
+                sign3.drawText(bodyText3)
+            } else if (sign4.x >= this.x - 50 && sign4.x <= this.x + 250){
+                sign4.drawText(bodyText4)
+            } else if (marshy.x >= this.x - 50 && marshy.x <= this.x + 250){
+                marshy.drawText(finalBodyText)
             } else {
                 statusText.style.display = "none";
                 pressSpace.style.display = "none";
                 statusText.innerHTML = ""
             };
 
-            if (this.x >= this.gameWidth - (this.x -50) && input.keys.indexOf('ArrowRight') > -1){
+            if (this.x <= this.gameWidth - this.width && this.x >= this.gameWidth- this.width && input.keys.indexOf('ArrowRight') > -1){
                 background.update('forward')
                 background1.update('forward')
                 background2.update('forward')
                 background3.update('forward')
                 background4.update('forward')
                 background5.update('forward')
-                sign1.update('forward', bodyText1)
+                sign1.update('forward')
                 sign2.update('forward')
+                sign3.update('forward')
+                sign4.update('forward')
+                sign5.update('forward')
+                marshy.update('forward')
              lastKey = 'right'
              lastOri = 'forward';
             } else if (this.x <= this.gameWidth * 0.1 && input.keys.indexOf('ArrowLeft') > -1){
@@ -246,8 +276,12 @@ window.addEventListener('load', function() {
                 background3.update('back')
                 background4.update('back')
                 background5.update('back')
-                sign1.update('back', bodyText1)
+                sign1.update('back')
                 sign2.update('back')
+                sign3.update('back')
+                sign4.update('back')
+                sign5.update('back')
+                marshy.update('back')
                 lastKey = 'left';
                 lastOri = 'back';
             }
@@ -325,6 +359,46 @@ window.addEventListener('load', function() {
     }
 }
 
+class Marshy {
+    constructor(gameWidth, gameHeight, signImg, position){
+        this.gameWidth = gameWidth;
+        this.gameHeight = gameHeight;
+        this.image = signImg;
+        this.width = 700;
+        this.height = 500;
+        this.x = position;
+        this.y = gameHeight * 0.4;
+        this.speed = 2;
+    }
+    draw(context){
+        context.drawImage(this.image, this.x, this.y, this.width, this.height)
+       
+    }
+    update(ori){
+        if(ori == "forward"){
+            this.x -= this.speed;
+            
+        } else if (ori == "back"){
+            this.x += this.speed;
+            
+        }
+    }
+    drawText(){
+        pressSpace.style.display = "block";
+        pressSpace.style.marginLeft = this.x + 60 +"px";
+        if(input.keys.indexOf(' ') > -1){
+                finalBodyText.style.display = "block";
+                if(finalBodyText.style.display = "block" && input.keys.indexOf('ArrowDown') > -1){
+                    noButton.classList.add("selected");
+                    yesButtons.classList.remove("selected");
+                } else if (finalBodyText.style.display = "block" && input.keys.indexOf('ArrowUp') > -1) {
+                    noButton.classList.remove("selected");
+                    yesButtons.classList.add("selected");
+                }
+    }}
+}
+
+
 
 
 
@@ -332,7 +406,41 @@ window.addEventListener('load', function() {
     
     let bodyText1 = "Hi! I'm a sign :3 <br> I was put here by Valentina to tell you you are cute! And to prepare you for the test at the end of this perilous path full of invisible enemies... <br> Onward, brave Kjuno!"
 
-    let bodyText2 = "Hi, me again!"
+    let bodyText2 = "Hi, me again! Forgot to tell you not to be afraid of the heights. Valentina forbade dying in this land so feel free to jump your bum out."
+
+    let bodyText3 = "Boo! Ha, got you!"
+
+    let bodyText4 = "One last thing... Imma tell you a secret. Your biggest enemy is this.. daunting creature white as snow, and.. don't be alarmed, but he is standing on YOUR RIGHT and I sense he's been looking at you for a while. Just go on like nothing happened, you don't want to test his patience."
+
+    let toeless = false;
+
+    noButton.addEventListener('click', function () {
+   
+        if(warningParagraph.style.display !== "block"){
+        warningParagraph.style.display = "block"; 
+        warningParagraph.classList.add('secondAnswer'); 
+    } else if (warningParagraph.classList.contains('secondAnswer')){
+        warningParagraph.innerHTML = "BAM! BAM! <br> *Marshy shot at your feet and now you're missing 3 toes.*"
+        noButton.classList.add('disabled');
+        toeless = true;
+    }
+    })
+
+    yesButtons.addEventListener('click', function () {
+        if (toeless == false) {
+            finalBodyText.style.display = "none";
+            winMessage.style.display = "flex"; 
+        } else if(toeless == true){
+            finalBodyText.style.display = "none";
+            winMessage.style.display = "flex"; 
+            toelessMessage.innerHTML = toelessMessage.innerHTML + "..even though you lack several toes.";
+        }
+    })
+
+    closeGame.addEventListener("click", function () {
+        window.close();
+    })
+
 
 
  
@@ -347,6 +455,10 @@ window.addEventListener('load', function() {
     const background5 = new Background(canvas.width, canvas.height, backgroundImage05, 0) 
     const sign1 = new InteractableItem(canvas.width, canvas.height, signImg1, canvas.width*0.5);
     const sign2 = new InteractableItem(canvas.width, canvas.height, signImg2, canvas.width);
+    const sign3 = new InteractableItem(canvas.width, canvas.height, signImg3, canvas.width*2);
+    const sign4 = new InteractableItem(canvas.width, canvas.height, signImg4, canvas.width*2.5);
+    const sign5 = new InteractableItem(canvas.width, canvas.height, signImg5, canvas.width*3);
+    const marshy = new Marshy(canvas.width, canvas.height, marshyImg, canvas.width*3.5);
 
     let lastTime = 0;
 
@@ -362,6 +474,10 @@ window.addEventListener('load', function() {
         background.draw(ctx);
         sign1.draw(ctx);
         sign2.draw(ctx);
+        sign3.draw(ctx);
+        sign4.draw(ctx);
+        sign5.draw(ctx);
+        marshy.draw(ctx);
         
         sign1.update();
         sign2.update();

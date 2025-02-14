@@ -3,10 +3,12 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Game Tutorial 2</title>
+    <title>Kruno's test</title>
     <link rel="stylesheet" href="style.css">
 </head>
 <body >
+
+
     <canvas id="canvas1"></canvas>
     <img class="bg" id="dogImage" src="dog.png" alt="">
     <img class="bg" id="backgroundImage" src="./images/300_dpi/layer01_Ground.png" alt="">
@@ -17,6 +19,10 @@
     <img class="bg" id="backgroundImage5" src="./images/300_dpi/layer07_Sky.png" alt="">
     <img id="sign1" src="sign.png" alt="">
     <img id="sign2" src="sign2.png" alt="">
+    <img id="sign3" src="sign3.png" alt="">
+    <img id="sign4" src="sign4.png" alt="">
+    <img id="sign5" src="sign5.png" alt="">
+    <img id="marshy" src="marshy.png" alt="">
 
     <img class="char-img" id="idleRight" src="./sprites-small/idleRight.png" alt="">
     <img class="char-img" id="idleLeft" src="./sprites-small/idleLeft.png" alt="">
@@ -26,6 +32,28 @@
     <img class="char-img" id="jumpLeft" src="./sprites-small/jumpLeft.png" alt="">
     <img class="char-img" id="fallRight" src="./sprites-small/fallRight.png" alt="">
     <img class="char-img" id="fallLeft" src="./sprites-small/fallLeft.png" alt="">
+
+
+<div id="lastMessage">
+    <h2>Will you be Valentina's Valentine? :3</h2>
+    <div class="buttons">
+        <button id="yes" class="selected">Yes! Gladly! Of course! ^_^</button>
+        <button id="no">Dun wanna! >:C</button>
+        <p id="warning" class="firstAnswer">Marshy cocks.. his gun. Think again, punk!</p>
+    </div>
+</div>
+
+<div id="winMessage" style="display: none;">
+    <div id="textDiv">
+    <h2>Happy Valentines Day!</h2>
+    <p>You passed the test!</p>
+    <p id="toelessMessage">Valentina will now smother you with kisses.</p>
+    <p>Since this adventure took a toll on your body (and mental state, lets be real), you will receive a special potion to replenish your energy.</p>
+    <button id="closeGame">Exit</button>
+</div>
+    <iframe src="model.html" frameborder="0"></iframe>
+</div>
+
 
     <h2  id="statusText"></h2>
 

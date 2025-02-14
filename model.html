@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GLTF Model Viewer</title>
+    <style>
+        body { margin: 0;
+            background-image: url("heart-bg.jpg");}
+        canvas { display: block; }
+    </style>
+</head>
+<body>
+    
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/loaders/GLTFLoader.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/controls/OrbitControls.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/environments/RoomEnvironment.js"></script>
+    <script>
+       let bgcolor = '#00FFFFFF';
+    
+        // Scene
+        const scene = new THREE.Scene();
+        const w = window.innerWidth;
+const h = window.innerHeight;
+const fullWidth = w;
+const fullHeight = h;
+        // Camera
+        const camera = new THREE.PerspectiveCamera(40, window.innerWidth / window.innerHeight, 1, 1000);
+     
+        camera.position.set(0, 0 , 100);  // Move camera back a bit to view the model
+    
+        scene.add(camera);
+       
+        
+
+        const directionalLight = new THREE.DirectionalLight(0xffffff, 0.5);
+        directionalLight.position.set(5, 5, 7);  // Light stays fixed here
+        camera.add(directionalLight);
+
+
+
+        const hemisphereLight = new THREE.HemisphereLight( 0xffffff, 0x080820, 0.5 );
+        camera.add( hemisphereLight );
+    
+        // Renderer
+        const renderer = new THREE.WebGLRenderer({ antialias: true});
+        renderer.setSize(window.innerWidth, window.innerHeight);
+        document.body.appendChild(renderer.domElement);
+
+        
+        
+        const environment = new THREE.RoomEnvironment();
+        const pmremGenerator = new THREE.PMREMGenerator( renderer );
+        scene.background = new THREE.Color( bgcolor );
+        camera.environment = pmremGenerator.fromScene( environment ).texture;
+
+
+        // Ambient Light (optional, for some soft background lighting)
+        const ambientLight = new THREE.AmbientLight(0x404040, 0.5); 
+        camera.add(ambientLight);
+
+
+        // Load GLTF Model
+        const loader = new THREE.GLTFLoader();
+        let model;
+        loader.load('./monster_zero_ultra/scene.gltf', function (gltf) {
+            model = gltf.scene;
+    model.position.set(0, -2, 0);
+    scene.add(model);
+        
+        }, undefined, function (error) {
+            console.error(error);
+        });
+
+        let isAnimating  = false;
+let maxSpeed = 0.05; // Maximum rotation speed
+let rotationSpeed = 0.05; // Rotation speed
+
+let duration = 2000; // Duration of the animation in milliseconds
+
+function animateModel() {
+    if (model && !isAnimating) {
+        isAnimating = true;
+        let startTime = performance.now();
+        let initialRotation = model.rotation.y;
+        let initialScale = model.scale.clone();
+
+        // Use an easing function for smoother animation
+        function easeInOutQuad(t) {
+            return t < 0.5 ? 2 * t * t : -1 + (4 - 2 * t) * t;
+        }
+
+        function animate(time) {
+            let elapsed = time - startTime;
+            let progress = Math.min(elapsed / duration, 1); // Clamp progress to [0, 1]
+            
+            // Apply easing to the progress for a smoother animation curve
+            let easedProgress = easeInOutQuad(progress);
+
+            if (progress < 1) {
+                // Smooth rotation animation
+                model.rotation.y = initialRotation + easedProgress * 4 * Math.PI;
+
+                // Smooth scaling animation (pop effect)
+                
+
+                requestAnimationFrame(animate);
+            } else {
+                // Complete the rotation and reset scale
+                model.rotation.y = initialRotation * Math.PI;
+                model.scale.copy(initialScale);
+                isAnimating = false;
+            }
+        }
+
+        requestAnimationFrame(animate);
+        // idle();
+    }
+}
+
+
+
+
+     
+        
+        const controls = new THREE.OrbitControls(camera, renderer.domElement);
+        controls.enableDamping = true; // Enable smooth movement
+        controls.dampingFactor = 0.05;
+        controls.minDistance = 1;  // Minimum zoom distance
+        controls.maxDistance = 10; // Maximum zoom distance
+
+
+        var target={x:2,y:2,z:2};
+
+
+
+        // Render Loop
+        function animate() {
+            requestAnimationFrame(animate);
+            controls.update();
+            renderer.render(scene, camera);
+            
+        }
+        animate();
+
+        // Adjust canvas on window resize
+        window.addEventListener('resize', () => {
+            renderer.setSize(window.innerWidth, window.innerHeight);
+            camera.aspect = window.innerWidth / window.innerHeight;
+            camera.updateProjectionMatrix();
+        });
+
+        var clock = new THREE.Clock();
+var camPos = new THREE.Vector3().copy(camera.position);
+var camShift = new THREE.Vector3();
+var isFree = true;
+var t = 0;
+        function idle() {
+
+renderer.setAnimationLoop(()=>{
+	t += clock.getDelta();
+  if (isFree) {
+  	camShift.set(
+    	Math.cos(t + (Math.PI * 2)),
+      Math.cos(t + (Math.PI * 2)),
+      Math.sin(4)
+      
+    ).multiplyScalar(2);
+    camera.position.addVectors(camPos, camShift);
+    controls.update();
+  }
+	renderer.render(scene, camera);
+});
+
+}
+    </script>
+</body>
+</html>

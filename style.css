@@ -13,7 +13,7 @@ body {
   border: none;
 }
 
-#dogImage, #backgroundImage, #enemyImage, #sign1, img.bg {
+#dogImage, #backgroundImage, #enemyImage, #sign1, #sign2, #sign3, #sign4, #sign5, #marshy, img.bg {
     display: none;
 }
 
@@ -31,12 +31,12 @@ body {
     position: absolute;
     color: #C9AE77;
     font-weight: bold;
-    margin-top: -20vh;
+    margin-top: 40vh;
     z-index: 20;
     transition: all 0.3s ease-in-out;
 }
 
-#statusText {
+#statusText, #lastMessage {
     text-align: center;
     background-color: #213D59;
     border: dashed #007E91 8px;
@@ -59,3 +59,76 @@ body {
     position: relative;
     z-index: 70;
 }
+
+#lastMessage {
+    display: none;
+}
+
+#warning, #winMessage {
+    display: none;
+}
+
+.buttons {
+    display: grid;
+    gap: 10px;
+}
+
+button {
+    padding: 10px;
+    font-size: 30px;
+    font-family:sans-serif;
+    border: none;
+}
+
+#yes, #no {
+    background-color: #007E91;
+    color: white;
+    font-weight: bold;
+    transition: all 0.3s ease-in-out;
+}
+
+#yes:hover, #no:hover {
+    background-color:  rgb(255, 215, 222);
+    color: #007E91;
+    font-weight: bold;
+}
+
+#no.disabled {
+    user-select: none;
+    pointer-events: none;
+    cursor: disabled;
+    background-color: rgb(197, 197, 197);
+}
+
+#winMessage {
+    display: flex;
+    height: 100vh;
+    width: 100vw;
+    font-family:'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+    position: absolute;
+    background-color: white;
+    z-index: 99;
+    font-size: 40px;
+    background-image: url("heart-bg.jpg");
+}
+
+
+iframe, #textDiv {
+    width: 50%;
+    
+}
+
+#textDiv {
+    padding: 50px;
+}
+
+#closeGame {
+    padding: 20px 50px;
+    background-color: #007E91;
+    color: white;
+}
+
+iframe {
+    margin: 50px;
+}
+
